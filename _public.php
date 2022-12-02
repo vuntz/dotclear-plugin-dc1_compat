@@ -24,61 +24,61 @@
 if (!defined('DC_RC_PATH')) return;
 
 /* http://www.vuntz.net/journal/2007/09/10/446-svn-vs-gitbzrhgblablabla */
-$core->url->register('redirect_post','','^(\d{4}/\d{2}/\d{2}/\d+.+)$',array('dcUrlRedirect','post'));
+dcCore::app()->url->register('redirect_post','','^(\d{4}/\d{2}/\d{2}/\d+.+)$',array('dcUrlRedirect','post'));
 
 /* http://www.vuntz.net/journal/2007/09/10 
  * http://www.vuntz.net/journal/2004/03 */
-if ($core->plugins->moduleExists('dayMode') && $core->blog->settings->daymode_active) {
+if (dcCore::app()->plugins->moduleExists('dayMode') && dcCore::app()->blog->settings->daymode->daymode_active) {
 	$archive_pattern = '^(\d{4}/\d{2}(/\d{2})?)/?$';
 } else {
 	$archive_pattern = '^(\d{4}/\d{2})(?:/\d{2})?/?$';
 }
-$core->url->register('redirect_archive','',$archive_pattern, array('dcUrlRedirect','archive'));
+dcCore::app()->url->register('redirect_archive','',$archive_pattern, array('dcUrlRedirect','archive'));
 unset($archive_pattern);
 
 /* http://www.vuntz.net/journal/2004/02/p2 */
-$core->url->register('redirect_archive_page','','^(\d{4}/\d{2})/p\d+$', array('dcUrlRedirect','archive'));
+dcCore::app()->url->register('redirect_archive_page','','^(\d{4}/\d{2})/p\d+$', array('dcUrlRedirect','archive'));
 
 /* http://www.vuntz.net/journal/Mon-avis */
-$core->url->register('redirect_category','','^([A-Z]+[A-Za-z0-9_-]*)/?$',array('dcUrlRedirect','category'));
+dcCore::app()->url->register('redirect_category','','^([A-Z]+[A-Za-z0-9_-]*)/?$',array('dcUrlRedirect','category'));
 
 /* http://www.vuntz.net/journal/Informatique/p2 */
-$core->url->register('redirect_category_page','','^([A-Z]+[A-Za-z0-9_-]*/p\d+)$',array('dcUrlRedirect','category_page'));
+dcCore::app()->url->register('redirect_category_page','','^([A-Z]+[A-Za-z0-9_-]*/p\d+)$',array('dcUrlRedirect','category_page'));
 
 /* http://www.vuntz.net/journal/p2 */
-$core->url->register('redirect_page','','^p(\d+)$',array('dcUrlRedirect','page'));
+dcCore::app()->url->register('redirect_page','','^p(\d+)$',array('dcUrlRedirect','page'));
 
 /* http://www.vuntz.net/journal/rss.php
  * http://www.vuntz.net/journal/rss.php?lang=en
  * http://www.vuntz.net/journal/rss.php?type=co
  * http://www.vuntz.net/journal/rss.php?type=co&post=446 */
-$core->url->register('redirect_rss','','^(rss.php)$',array('dcUrlRedirect','rss'));
-$core->url->register('redirect_atom','','^(atom.php)$',array('dcUrlRedirect','atom'));
+dcCore::app()->url->register('redirect_rss','','^(rss.php)$',array('dcUrlRedirect','rss'));
+dcCore::app()->url->register('redirect_atom','','^(atom.php)$',array('dcUrlRedirect','atom'));
 
 /* http://www.vuntz.net/journal/tb.php?id=446
  * http://www.vuntz.net/journal/tb.php */
-$core->url->register('redirect_tb','','^(tb.php)$',array('dcUrlRedirect','tb'));
+dcCore::app()->url->register('redirect_tb','','^(tb.php)$',array('dcUrlRedirect','tb'));
 
 class dcUrlRedirect extends dcUrlHandlers
 {
 	private static function redirect_to($dest)
 	{
 		http::head(301,'Moved Permanently');
-		header('Location: '.$GLOBALS['core']->blog->url.$dest);
+		header('Location: '.dcCore::app()->blog->url.$dest);
 		exit;
 	}
 
-	public static function post($args)
+	public static function post(?string $args): void
 	{
 		self::redirect_to("post/".$args);
 	}
 
-	public static function archive($args)
+	public static function archive(?string $args): void
 	{
 		self::redirect_to("archive/".$args);
 	}
 
-	public static function category($args)
+	public static function category(?string $args): void
 	{
 		self::redirect_to("category/".$args);
 	}
