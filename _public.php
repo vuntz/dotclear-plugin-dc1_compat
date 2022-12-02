@@ -21,6 +21,7 @@
 #
 # This plugin is based on dc1redirect:
 # http://dev.dotclear.net/2.0/browser/plugins/dc1redirect
+if (!defined('DC_RC_PATH')) return;
 
 /* http://www.vuntz.net/journal/2007/09/10/446-svn-vs-gitbzrhgblablabla */
 $core->url->register('redirect_post','','^(\d{4}/\d{2}/\d{2}/\d+.+)$',array('dcUrlRedirect','post'));
