@@ -31,7 +31,7 @@ $core->url->register('redirect_post','','^(\d{4}/\d{2}/\d{2}/\d+.+)$',array('dcU
 if ($core->plugins->moduleExists('dayMode') && $core->blog->settings->daymode_active) {
 	$archive_pattern = '^(\d{4}/\d{2}(/\d{2})?)/?$';
 } else {
-	$archive_pattern = '^(\d{4}/\d{2})/?$';
+	$archive_pattern = '^(\d{4}/\d{2})(?:/\d{2})?/?$';
 }
 $core->url->register('redirect_archive','',$archive_pattern, array('dcUrlRedirect','archive'));
 unset($archive_pattern);
@@ -63,11 +63,8 @@ class dcUrlRedirect extends dcUrlHandlers
 {
 	private static function redirect_to($dest)
 	{
-		global $core;
-
-		$url = $core->blog->url.$dest;
 		http::head(301,'Moved Permanently');
-		header('Location: '.$url);
+		header('Location: '.$GLOBALS['core']->blog->url.$dest);
 		exit;
 	}
 
